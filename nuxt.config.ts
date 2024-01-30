@@ -31,6 +31,11 @@ export default defineNuxtConfig({
         chart: {
           backgroundColor: 'transparent'
         },
+        lang: {
+          downloadPNG: 'Unduh Gambar PNG',
+          downloadJPEG: 'Unduh Gambar JPEG',
+          downloadPDF: 'Unduh File PDF'
+        },
         credits: {
           enabled: false
         }

@@ -156,6 +156,9 @@ export default {
                 ]
             },
             chartColumnStackOptions: {
+                lang: {
+                    // dictionary
+                },
                 chart: {
                     type: 'column',
                 },
