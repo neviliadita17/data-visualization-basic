@@ -8,7 +8,9 @@
         </div>
 
         <div class="bg-gray-200 rounded-md shadow-md">
-            <highchart :options="chartColumnStackOptions" :modules="['exporting']"/>
+            <highchart 
+                :options="chartColumnStackOptions" 
+                :modules="['exporting', 'export-data']"/>
         </div>
         <div class="bg-gray-200 rounded-md shadow-md">
             <highchart :options="piechartOptions"/>
