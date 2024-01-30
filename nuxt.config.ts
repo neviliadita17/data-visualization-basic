@@ -15,7 +15,7 @@ export default defineNuxtConfig({
       ]
     }
   },
-  ssr: true,
+  ssr: false,
   css: ['~/assets/css/main.css'],
 
   postcss: {
@@ -24,16 +24,17 @@ export default defineNuxtConfig({
       autoprefixer: {},
     },
   },
-
-  image: {
-    domains: ['https://cdn.myanimelist.net/'],
-  },
-
-  modules: [ "@nuxt/image", 'nuxt-delay-hydration'],
-
-  delayHydration: {
-    // enables nuxt-delay-hydration in dev mode for testing
-    // NOTE: you should disable this once you've finished testing, it will break HMR
-    debug: process.env.NODE_ENV === 'development',
-  }
+  modules: [
+    ['nuxt-highcharts', { 
+      setOptions: {
+        colors: ['#FF9843', '#86A7FC', '#FFDD95', '#3468C0'],
+        chart: {
+          backgroundColor: 'transparent'
+        },
+        credits: {
+          enabled: false
+        }
+      }
+     }]
+  ],
 });

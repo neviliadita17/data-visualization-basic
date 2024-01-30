@@ -1,36 +1,271 @@
 <template>
-    <AppContainer title="Anime List">
-        <div class="grid grid-cols-3 md:grid-cols-5 gap-x-3 gap-y-4 my-4">
-            <div 
-                v-for="(item, index) in items"
-                :key="index"
-                class="bg-gray-200">
-                
-                <LazyAnimeCard :anime="item" />
-            </div>
+    <div class="grid grid-cols-2 gap-2">
+        <div class="bg-gray-200 rounded-md shadow-md">
+            <highchart :options="chartOptions"/>
         </div>
-        
-    </AppContainer>
+        <div class="bg-gray-200 rounded-md shadow-md">
+            <highchart :options="chartColumnOptions"/>
+        </div>
+
+        <div class="bg-gray-200 rounded-md shadow-md">
+            <highchart :options="chartColumnStackOptions" :modules="['exporting']"/>
+        </div>
+        <div class="bg-gray-200 rounded-md shadow-md">
+            <highchart :options="piechartOptions"/>
+        </div>
+    </div>
 </template>
 
 <script>
 export default {
-    data() {
+    data () {
         return {
-            items: {}
-        }
-    },
+            chartOptions: {
+                chart: {
+                    type: 'areaspline',
+                },
+                title: {
+                    text: 'Statistik Data Penduduk'
+                },
+                subtitle: {
+                    text: 'Data Penduduk tahun 2020-2024'
+                },
+                legend: {
+                    align: 'center',
+                    verticalAlign: 'bottom',
+                    layout: 'horizontal'
+                },
+                tooltip: {
+                    // enabled: false 
+                    // format -----------
+                    // format: '<b> Tahun {x} </b> <br /> Jumlah Penduduk: {series.name} {point.y}'
 
-    mounted() {
-        this.fetchAnimeList()
-    },
+                    // formatter ------------
+                    // formatter: function() {
+                    //     return `<b> Tahun ${this.x} </b> <br /> Jumlah Penduduk ${this.series.name}: ${this.point.y}`
+                    // }
 
-    methods: {
-        async fetchAnimeList() {
-            const resp = await fetch('https://api.jikan.moe/v4/anime')
-            const body = await resp.json()
-            this.items = body.data
-            console.log(resp)
+                    // formatter untuk shared tooltip------------
+                    // split: true,
+                    shared: true,
+                    formatter: function() {
+                        // console.log(this.points)
+                        return [`<b>Tahun ${this.x}</b> </br>`].concat(
+                            this.points ? this.points.map(point => {
+                                return `Jumlah ${point.series.name}: ${point.y} <br />`
+                            }) : []
+                        )
+                        return 'something'
+                    }
+
+                },
+                // plotOptions: {
+                //     spline: {
+                //         dataLabels: {
+                //         enabled: false
+                //         }
+                //     }
+                // },
+                xAxis: {
+                    categories: [2020, 2021, 2022, 2023, 2024]
+                },
+                yAxis: {
+                    title: {
+                        text: 'Jumlah Penduduk'
+                    }
+                },
+                series: [
+                    {
+                        name: 'Pria',
+                        data: [21534, 32465, 33530, 42330, 63590]
+                    },
+                    {
+                        name: 'Wanita',
+                        data: [32597, 39435, 43520, 52530, 73290]
+                    },
+
+                ]
+            },
+            chartColumnOptions: {
+                chart: {
+                    type: 'bar',
+                },
+                title: {
+                    text: 'Statistik Data Penduduk'
+                },
+                subtitle: {
+                    text: 'Data Penduduk tahun 2020-2024'
+                },
+                legend: {
+                    align: 'center',
+                    verticalAlign: 'bottom',
+                    layout: 'horizontal'
+                },
+                tooltip: {
+                    // enabled: false 
+                    // format -----------
+                    // format: '<b> Tahun {x} </b> <br /> Jumlah Penduduk: {series.name} {point.y}'
+
+                    // formatter ------------
+                    // formatter: function() {
+                    //     return `<b> Tahun ${this.x} </b> <br /> Jumlah Penduduk ${this.series.name}: ${this.point.y}`
+                    // }
+
+                    // formatter untuk shared tooltip------------
+                    // split: true,
+                    shared: true,
+                    formatter: function() {
+                        // console.log(this.points)
+                        return [`<b>Tahun ${this.x}</b> </br>`].concat(
+                            this.points ? this.points.map(point => {
+                                return `Jumlah ${point.series.name}: ${point.y} <br />`
+                            }) : []
+                        )
+                        return 'something'
+                    }
+
+                },
+                plotOptions: {
+                    bar: {
+                        stacking: 'normal',
+                        dataLabels: {
+                            enabled: true
+                        }
+                    }
+                },
+                xAxis: {
+                    categories: [2020, 2021, 2022, 2023, 2024]
+                },
+                yAxis: {
+                    title: {
+                        text: 'Jumlah Penduduk'
+                    }
+                },
+                series: [
+                    {
+                        name: 'Pria',
+                        data: [21534, 32465, 33530, 42330, 63590]
+                    },
+                    {
+                        name: 'Wanita',
+                        data: [32597, 39435, 43520, 52530, 73290]
+                    },
+
+                ]
+            },
+            chartColumnStackOptions: {
+                chart: {
+                    type: 'column',
+                },
+                // credits: {
+                //     enabled: true
+                // },
+                title: {
+                    text: 'Statistik Data Penduduk'
+                },
+                subtitle: {
+                    text: 'Data Penduduk tahun 2020-2024'
+                },
+                legend: {
+                    align: 'center',
+                    verticalAlign: 'bottom',
+                    layout: 'horizontal'
+                },
+                tooltip: {
+                    // enabled: false 
+                    // format -----------
+                    // format: '<b> Tahun {x} </b> <br /> Jumlah Penduduk: {series.name} {point.y}'
+
+                    // formatter ------------
+                    // formatter: function() {
+                    //     return `<b> Tahun ${this.x} </b> <br /> Jumlah Penduduk ${this.series.name}: ${this.point.y}`
+                    // }
+
+                    // formatter untuk shared tooltip------------
+                    // split: true,
+                    shared: true,
+                    formatter: function() {
+                        // console.log(this.points)
+                        return [`<b>Tahun ${this.x}</b> </br>`].concat(
+                            this.points ? this.points.map(point => {
+                                return `Jumlah ${point.series.name}: ${point.y} <br />`
+                            }) : []
+                        )
+                        return 'something'
+                    }
+
+                },
+                plotOptions: {
+                    column: {
+                        stacking: 'normal',
+                        // dataLabels: {
+                        //     enabled: true
+                        // }
+                    }
+                },
+                xAxis: {
+                    categories: [2020, 2021, 2022, 2023, 2024]
+                },
+                yAxis: {
+                    title: {
+                        text: 'Jumlah Penduduk'
+                    }
+                },
+                series: [
+                    {
+                        name: 'Pria',
+                        data: [21534, 32465, 33530, 42330, 63590]
+                    },
+                    {
+                        name: 'Wanita',
+                        data: [32597, 39435, 43520, 52530, 73290]
+                    },
+
+                ]
+            },
+            piechartOptions: {
+                chart: {
+                    type: 'pie',
+                    backgroundColor: "#FFDD95"
+                }, 
+                title: {
+                    text: 'Perbandingan Pria dan Wanita',
+                    style: {
+                        color: '#000',
+                        fontSize: '20px', 
+                        textTransform: 'uppercase'
+                    }
+                },
+                subtitle: {
+                    text: 'Jumlah data Pria dan Wanita'
+                },
+                plotOptions: {
+                    pie: {
+                        innerSize: '30%',
+                        allowPointSelect: true,
+                        dataLabels: {
+                            enabled: true,
+                            distance: -60,
+                            format: '{point.name}</br> {point.y}'
+                        }
+                    }
+                },
+                series: [
+                    {
+                        name: 'Jumlah',
+                        data: [
+                            {
+                                name: 'Pria',
+                                y: 45672
+                            },
+                            {
+                                name: 'Wanita',
+                                y: 55672
+                            }
+                        ]
+                    }
+                ]
+            }
         }
     }
 }
